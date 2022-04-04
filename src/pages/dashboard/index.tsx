@@ -1,13 +1,12 @@
-import { Center, Container, Flex, Heading, Stack } from "@chakra-ui/react";
+import { Stack } from "components/cards/card-stack";
 import { NextPage } from "next";
 
-const Dashboard: NextPage = () => {
+const Dashboard: NextPage = function() {
+
   return (
-    <Container>
-      <Heading>
-        Test
-      </Heading>
-    </Container>
+    <div>
+      <Stack />
+    </div>
   )
 }
 
