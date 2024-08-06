@@ -1,10 +1,10 @@
 import styled from "@emotion/styled";
-import { AnimatePresence, motion, useSpring, useTransform } from "framer-motion";
-import { ReactNode, useEffect, useState } from "react";
+import { AnimatePresence, motion, useSpring } from "framer-motion";
+import { useEffect, useState } from "react";
 import { Card } from "./card";
 import "./styles.css";
 
-type meme = {
+type Meme = {
   id: string;
   src: string;
 }
@@ -16,25 +16,14 @@ const Frame = styled.div`
   align-items: center;
   position: relative;
 `
-export var Stack = function() {
-  const pop = (array: any[]) => array.filter((_, idx) => idx !== array.length - 1)
+export const Stack = () => {
 
   const backgroundTransformer = useSpring(0, {
     damping: 10000,
     mass: 0.01
   });
 
-  const background = useTransform(
-    backgroundTransformer,
-    [-50, 0, 50],
-    [
-      "linear-gradient(90deg, rgba(255,145,145,1) 0%, rgba(255,145,145,0) 50%, rgba(15,15,15,0) 100%)",
-      "linear-gradient(90deg, rgba(15,15,15,0) 0%, rgba(15,15,15,0) 50%, rgba(15,15,15,0) 100%)",
-      "linear-gradient(90deg, rgba(15,15,15,0) 0%, rgba(126,255,99,0) 50%, rgba(126,255,99,1) 100%)"
-    ]
-  );
-
-  const getNextItems = (n = 3): Promise<meme[]> =>
+  const getNextItems = (n = 3): Promise<Meme[]> =>
     fetch(`https://meme-api.herokuapp.com/gimme/${n}`)
       .then(response => response.json())
       .then(json => json.memes.map((meme: { url: string }) => ({
@@ -43,7 +32,7 @@ export var Stack = function() {
           })));
 
   const [loading, setLoading] = useState(true);
-  const [items, setItems] = useState<meme[]>([]);
+  const [items, setItems] = useState<Meme[]>([]);
 
   useEffect(() => {
     if (items.length < 3) {
@@ -76,7 +65,7 @@ export var Stack = function() {
   return (
       <motion.div className="dash">
         <AnimatePresence>
-          {displayItems.map((item: meme) => {
+          {displayItems.map((item: Meme) => {
             console.log("in return", item)
             return (
               <Card
@@ -91,4 +80,6 @@ export var Stack = function() {
         </AnimatePresence>
       </motion.div>
   )
-}
+};
+
+export default Stack;
